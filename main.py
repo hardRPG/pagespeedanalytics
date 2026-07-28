@@ -1,0 +1,27 @@
+import os
+import requests
+import json
+from dotenv import load_dotenv
+
+load_dotenv()
+
+PSAPI_KEY = os.getenv("PAGESPEED_API_KEY")
+testedURL = "https://jpw-development.de"
+psBaseCall = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed"
+
+params = {
+    "key":PSAPI_KEY,
+    "url":testedURL
+}
+
+def callPagespeedAPI():
+    response = requests.get(psBaseCall,params=params)
+    if response.ok:
+        print("Response:", response.json())
+    elif 400 <= response.status_code < 500:
+        print("Client error:", response.status_code, response.json())
+    else: 
+        print("Error:", response.status_code, response.text)
+
+
+callPagespeedAPI()
